@@ -4,8 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
     <title>Cybersecurity Quiz for Kids</title>
     <style>
+        
         /* General Styles */
         * {
             box-sizing: border-box;
@@ -14,7 +16,7 @@
         }
 
         body {
-            font-family: 'Arial', sans-serif;
+            font-family: 'Orbitron', sans-serif;
             background-image: url('images/background.jpeg'); /* Replace with your background image */
             background-size: cover;
             background-position: center;
@@ -244,6 +246,13 @@
         <p>&copy; 2024 CyberSafe Kids</p>
     </footer>
 
+    <!-- Preload the audio files -->
+    <audio id="ding-sound" src="sounds/ding.mp3" preload="auto"></audio>
+    <audio id="buzzer-sound" src="sounds/buzzer.mp3" preload="auto"></audio>
+    <audio id="victory-sound" src="sounds/victory.mp3" preload="auto"></audio>
+    <audio id="background-music" src="sounds/background-music.mp3" preload="auto" loop></audio>
+
+
     <script>
         // Array of Questions
         const questions = [
@@ -376,6 +385,11 @@
             document.getElementById("home-page").style.display = "none";
             document.getElementById("quiz-page").style.display = "flex";
             showQuestion();
+
+            // Play background music
+            const backgroundMusic = document.getElementById("background-music");
+            backgroundMusic.currentTime = 0;
+            backgroundMusic.play().catch(error => console.error("Error playing background music:", error));
         }
 
         function showQuestion() {
@@ -398,17 +412,25 @@
 
         function checkAnswer(button, selectedOption) {
             const currentQuestion = questions[currentQuestionIndex];
+            const dingSound = document.getElementById("ding-sound");
+            const buzzerSound = document.getElementById("buzzer-sound");
             if (selectedOption === currentQuestion.correct) {
                 button.classList.add("correct");
                 document.getElementById("result").style.color = "green";
                 document.getElementById("result").textContent = "Correct!";
                 correctAnswers++;
+                console.log("Playing ding sound");
+                dingSound.currentTime = 0;
+                dingSound.play();
             } else {
                 button.classList.add("incorrect");
                 document.getElementById("result").style.color = "red";
                 document.getElementById("result").textContent = `Incorrect! ${currentQuestion.explanation}`;
                 const correctButton = document.getElementById(`option-${currentQuestion.correct}`);
                 correctButton.classList.add("correct");
+                console.log("Playing buzzer sound");
+                buzzerSound.currentTime = 0;
+                buzzerSound.play();
             }
 
             const buttons = document.querySelectorAll(".options button");
@@ -426,16 +448,23 @@
         }
 
         function showResults() {
-            const totalQuestions = questions.length;
-            const quizPage = document.getElementById("quiz-page");
-            quizPage.innerHTML = `
-                <div class="home-content">
-                    <h2>Quiz Completed!</h2>
-                    <p>You answered ${correctAnswers} out of ${totalQuestions} questions correctly.</p>
-                    <button onclick="resetQuiz()">Play Again</button>
-                </div>
-            `;
-        }
+    const totalQuestions = questions.length;
+    const quizPage = document.getElementById("quiz-page");
+    const victorySound = document.getElementById("victory-sound");
+
+    // Play the victory sound
+    victorySound.currentTime = 0;
+    victorySound.play().catch(error => console.error("Error playing victory sound:", error));
+
+    // Display results
+    quizPage.innerHTML = `
+        <div class="home-content">
+            <h2>Quiz Completed!</h2>
+            <p>You answered ${correctAnswers} out of ${totalQuestions} questions correctly.</p>
+            <button onclick="resetQuiz()">Play Again</button>
+        </div>
+    `;
+}
 
         function resetQuiz() {
             currentQuestionIndex = 0;
