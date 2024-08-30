@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cybersecurity Quiz for Kids</title>
+    <style>
+        /* General Styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-image: url('images/background.jpeg'); /* Replace with your background image */
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            text-align: center;
+            color: #fff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Home Page Styles */
+        #home-page {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .home-content {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 40px;
+            border-radius: 10px;
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .home-content h2 {
+            margin-bottom: 20px;
+            font-size: 28px;
+            color: #333;
+        }
+
+        .home-content p {
+            margin-bottom: 30px;
+            font-size: 18px;
+            color: #555;
+        }
+
+        .home-content button {
+            padding: 15px 30px;
+            font-size: 18px;
+            color: #fff;
+            background-color: #007BFF;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .home-content button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Quiz Page Styles */
+        #quiz-page {
+            flex: 1;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .quiz-container {
+            background-color: rgba(0, 0, 0, 0.95);
+            padding: 30px;
+            border-radius: 10px;
+            max-width: 1000px;
+            width: 100%;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .image-section {
+            flex: 1 1 45%;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .image-section img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .quiz-section {
+            flex: 1 1 45%;
+            margin-bottom: 20px;
+        }
+
+        .question-box {
+            background-color: #f1f1f1;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            font-size: 20px;
+            color: #333;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .options button {
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            font-size: 18px;
+            color: #fff;
+            background-color: #007BFF;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: left;
+            transition: background-color 0.3s;
+        }
+
+        .options button:hover {
+            background-color: #0056b3;
+        }
+
+        .options button.correct {
+            background-color: #28a745 !important;
+        }
+
+        .options button.incorrect {
+            background-color: #dc3545 !important;
+        }
+
+        #result {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #fbff00;
+        }
+
+        #next-button {
+            display: none;
+            margin-top: 20px;
+            padding: 15px 30px;
+            font-size: 18px;
+            color: #333;
+            background-color: #fff;
+            border: 2px solid #007BFF;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        #next-button:hover {
+            background-color: #cfcc09;
+            color: #fff;
+        }
+
+        /* Footer Styles */
+        footer {
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 15px;
+            text-align: center;
+            color: #fff;
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .quiz-container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .image-section,
+            .quiz-section {
+                flex: 1 1 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Cybersecurity Quiz for Kids</h1>
+    </header>
+
+    <!-- Home Page -->
+    <div id="home-page">
+        <div class="home-content">
+            <h2>Welcome to the Cybersecurity Quiz!</h2>
+            <p>Test your knowledge about staying safe online. Are you ready to begin?</p>
+            <button onclick="startQuiz()">Start Quiz</button>
+        </div>
+    </div>
+
+    <!-- Quiz Page -->
+    <div id="quiz-page">
+        <div class="quiz-container">
+            <div class="image-section">
+                <img id="left-image" src="" alt="Left Image">
+            </div>
+            <div class="quiz-section">
+                <div class="question-box" id="question-text">
+                    <!-- Question text will be inserted here -->
+                </div>
+                <div class="options">
+                    <button id="option-A" onclick="checkAnswer(this, 'A')"></button>
+                    <button id="option-B" onclick="checkAnswer(this, 'B')"></button>
+                    <button id="option-C" onclick="checkAnswer(this, 'C')"></button>
+                    <button id="option-D" onclick="checkAnswer(this, 'D')"></button>
+                </div>
+                <div id="result"></div>
+                <button id="next-button" onclick="nextQuestion()">Next Question</button>
+            </div>
+            <div class="image-section">
+                <img id="right-image" src="" alt="Right Image">
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 CyberSafe Kids</p>
+    </footer>
+
+    <script>
+        // Array of Questions
+        const questions = [
+        {
+                question: "What should you do if a website asks for your personal information?",
+                options: {
+                    A: "Give it right away.",
+                    B: "Ask a parent or guardian first.",
+                    C: "Ignore it and close the website.",
+                    D: "Share it on social media."
+                },
+                correct: 'B',
+                explanation: "Always consult with a trusted adult before sharing personal information online.",
+                leftImage: 'images/secure_website.jpg', // Replace with actual image paths
+                rightImage: 'images/ask_parent.jpg'
+            },
+            {
+                question: "What makes a strong password?",
+                options: {
+                    A: "Your name and birthdate.",
+                    B: "The word 'password'.",
+                    C: "A mix of letters, numbers, and symbols.",
+                    D: "12345678."
+                },
+                correct: 'C',
+                explanation: "Strong passwords combine letters, numbers, and symbols to make them hard to guess.",
+                leftImage: 'images/strong_password.jpg',
+                rightImage: 'images/password_security.jpg'
+            },
+            {
+                question: "If someone you don't know sends you a friend request online, what should you do?",
+                options: {
+                    A: "Accept the request immediately.",
+                    B: "Ignore or decline the request.",
+                    C: "Share your personal details with them.",
+                    D: "Meet them in person."
+                },
+                correct: 'B',
+                explanation: "It's safest to ignore or decline friend requests from people you don't know.",
+                leftImage: 'images/stranger_request.jpg',
+                rightImage: 'images/online_safety.jpg'
+            },
+            {
+                question: "What is phishing?",
+                options: {
+                    A: "A fun online game.",
+                    B: "A method hackers use to trick you into giving personal information.",
+                    C: "A way to catch fish.",
+                    D: "A type of computer software."
+                },
+                correct: 'B',
+                explanation: "Phishing is when scammers pretend to be trustworthy to steal your information.",
+                leftImage: 'images/phishing.jpg',
+                rightImage: 'images/scam_alert.jpg'
+            },
+            {
+                question: "Why is it important to log out of accounts after using a public computer?",
+                options: {
+                    A: "To save electricity.",
+                    B: "So others can't access your information.",
+                    C: "Because the computer runs faster.",
+                    D: "It's not important."
+                },
+                correct: 'B',
+                explanation: "Logging out prevents others from accessing your personal accounts and information.",
+                leftImage: 'images/logout.jpg',
+                rightImage: 'images/public_computer.jpg'
+            },
+            {
+                question: "Which of these should you NOT share on social media?",
+                options: {
+                    A: "Your favorite movie.",
+                    B: "Your home address.",
+                    C: "A picture of your pet.",
+                    D: "A drawing you made."
+                },
+                correct: 'B',
+                explanation: "Personal information like your home address should never be shared publicly online.",
+                leftImage: 'images/no_share.jpg',
+                rightImage: 'images/social_media_safety.jpg'
+            },
+            {
+                question: "What should you do if you receive a mean message online?",
+                options: {
+                    A: "Reply with a mean message.",
+                    B: "Delete your account.",
+                    C: "Tell a trusted adult and block the sender.",
+                    D: "Share it with friends."
+                },
+                correct: 'C',
+                explanation: "Informing a trusted adult and blocking the sender is the best way to handle cyberbullying.",
+                leftImage: 'images/mean_message.jpg',
+                rightImage: 'images/tell_adult.jpg'
+            },
+            {
+                question: "Is it safe to download files from unknown websites?",
+                options: {
+                    A: "Yes, if they look interesting.",
+                    B: "Only if they're free.",
+                    C: "No, they might contain viruses.",
+                    D: "Yes, always safe."
+                },
+                correct: 'C',
+                explanation: "Downloading from unknown sources can introduce harmful viruses to your device.",
+                leftImage: 'images/download_warning.jpg',
+                rightImage: 'images/virus_alert.jpg'
+            },
+            {
+                question: "What does HTTPS in a website URL indicate?",
+                options: {
+                    A: "The website is in high definition.",
+                    B: "The website is secure and uses encryption.",
+                    C: "The website is slow.",
+                    D: "Nothing important."
+                },
+                correct: 'B',
+                explanation: "HTTPS means the website has a secure connection, protecting your data.",
+                leftImage: 'images/https.jpg',
+                rightImage: 'images/secure_connection.jpg'
+            },
+            {
+                question: "Why should you cover your webcam when not in use?",
+                options: {
+                    A: "To keep it clean.",
+                    B: "To save battery.",
+                    C: "To prevent hackers from spying.",
+                    D: "For no reason."
+                },
+                correct: 'C',
+                explanation: "Covering your webcam helps prevent unauthorized access and protects your privacy.",
+                leftImage: 'images/cover_webcam.jpg',
+                rightImage: 'images/privacy_protection.jpg'
+            }
+        ];
+
+        let currentQuestionIndex = 0;
+        let correctAnswers = 0;
+
+        function startQuiz() {
+            document.getElementById("home-page").style.display = "none";
+            document.getElementById("quiz-page").style.display = "flex";
+            showQuestion();
+        }
+
+        function showQuestion() {
+            const currentQuestion = questions[currentQuestionIndex];
+            document.getElementById("question-text").textContent = currentQuestion.question;
+            document.getElementById("option-A").textContent = currentQuestion.options.A;
+            document.getElementById("option-B").textContent = currentQuestion.options.B;
+            document.getElementById("option-C").textContent = currentQuestion.options.C;
+            document.getElementById("option-D").textContent = currentQuestion.options.D;
+            document.getElementById("left-image").src = currentQuestion.leftImage;
+            document.getElementById("right-image").src = currentQuestion.rightImage;
+            document.getElementById("result").textContent = "";
+            document.getElementById("next-button").style.display = "none";
+
+            const buttons = document.querySelectorAll(".options button");
+            buttons.forEach(button => {
+                button.classList.remove("correct", "incorrect");
+                button.disabled = false;
+            });
+        }
+
+        function checkAnswer(button, selectedOption) {
+            const currentQuestion = questions[currentQuestionIndex];
+            if (selectedOption === currentQuestion.correct) {
+                button.classList.add("correct");
+                document.getElementById("result").style.color = "green";
+                document.getElementById("result").textContent = "Correct!";
+                correctAnswers++;
+            } else {
+                button.classList.add("incorrect");
+                document.getElementById("result").style.color = "red";
+                document.getElementById("result").textContent = `Incorrect! ${currentQuestion.explanation}`;
+                const correctButton = document.getElementById(`option-${currentQuestion.correct}`);
+                correctButton.classList.add("correct");
+            }
+
+            const buttons = document.querySelectorAll(".options button");
+            buttons.forEach(btn => btn.disabled = true);
+            document.getElementById("next-button").style.display = "block";
+        }
+
+        function nextQuestion() {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < questions.length) {
+                showQuestion();
+            } else {
+                showResults();
+            }
+        }
+
+        function showResults() {
+            const totalQuestions = questions.length;
+            const quizPage = document.getElementById("quiz-page");
+            quizPage.innerHTML = `
+                <div class="home-content">
+                    <h2>Quiz Completed!</h2>
+                    <p>You answered ${correctAnswers} out of ${totalQuestions} questions correctly.</p>
+                    <button onclick="resetQuiz()">Play Again</button>
+                </div>
+            `;
+        }
+
+        function resetQuiz() {
+            currentQuestionIndex = 0;
+            correctAnswers = 0;
+            document.getElementById("home-page").style.display = "flex";
+            document.getElementById("quiz-page").style.display = "none";
+            document.getElementById("quiz-page").innerHTML = `
+                <div class="quiz-container">
+                    <div class="image-section">
+                        <img id="left-image" src="" alt="Left Image">
+                    </div>
+                    <div class="quiz-section">
+                        <div class="question-box" id="question-text">
+                        </div>
+                        <div class="options">
+                            <button id="option-A" onclick="checkAnswer(this, 'A')"></button>
+                            <button id="option-B" onclick="checkAnswer(this, 'B')"></button>
+                            <button id="option-C" onclick="checkAnswer(this, 'C')"></button>
+                            <button id="option-D" onclick="checkAnswer(this, 'D')"></button>
+                        </div>
+                        <div id="result"></div>
+                        <button id="next-button" onclick="nextQuestion()">Next Question</button>
+                    </div>
+                    <div class="image-section">
+                        <img id="right-image" src="" alt="Right Image">
+                    </div>
+                </div>
+            `;
+        }
+    </script>
+</body>
+
+</html>
